@@ -1,8 +1,9 @@
+ 
 pipeline {
     agent any
       options {
             buildDiscarder(logRotator(numToKeepStr: '7'))
-              
+             }
    stages {    
      stage('Deploy') { 
            steps {
