@@ -27,7 +27,5 @@ pipeline {
         always { 
             echo 'Stage is success'
         }
-    }
-    
-    
+    }    
 }
