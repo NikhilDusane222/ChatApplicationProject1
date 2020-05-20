@@ -1,31 +1,28 @@
  
 pipeline {
     agent any
-      options {
-            buildDiscarder(logRotator(numToKeepStr: '7'))
-             }
-   stages {    
-     stage('Deploy') { 
-           steps {
-             sh ''' #! /bin/bash 
-             
-             aws deploy create-deployment --application-name TFChatApp --deployment-group-name TFCodeDeployGroup --deployment-config-name CodeDeployDefault.AllAtOnce --github-location repository=NikhilDusane222/ChatApplicationProject1,commitId=${GIT_COMMIT}
-             '''
+      stages {    
+         stage('Deploy') { 
+               steps {
+                 sh ''' #! /bin/bash 
+
+                 aws deploy create-deployment --application-name TFChatApp --deployment-group-name TFCodeDeployGroup --deployment-config-name CodeDeployDefault.AllAtOnce --github-location repository=NikhilDusane222/ChatApplicationProject1,commitId=${GIT_COMMIT}
+                 '''
+                }
             }
+
+         stage('status'){
+                steps {
+                sh ''' #! /bin/bash
+                echo Deployment started
+                '''
+                }  
+            }
+
         }
-        
-     stage('status'){
-            steps {
-            sh ''' #! /bin/bash
-            echo Deployment started
-            '''
-            }  
-        }
-        
+        post { 
+            always { 
+                echo 'Stage is success'
+            }
+        }    
     }
-    post { 
-        always { 
-            echo 'Stage is success'
-        }
-    }    
-}
