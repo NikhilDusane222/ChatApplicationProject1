@@ -2,13 +2,15 @@ pipeline {
     agent any
       options {
             buildDiscarder(logRotator(numToKeepStr: '7'))
-              
-   stages {    
+             }
+    
+    
+         
      stage('Deploy') { 
            steps {
              sh ''' #! /bin/bash 
              
-             aws deploy create-deployment --application-name ChatApplication --deployment-group-name ChatApplication-dg --deployment-config-name CodeDeployDefault.AllAtOnce --github-location repository=https://github.com/NikhilDusane222/ChatApplicationProject1.git,commitId=${GIT_COMMIT}
+             aws deploy create-deployment --application-name sonartest --deployment-group-name sonartest-dg --deployment-config-name CodeDeployDefault.AllAtOnce --github-location repository=https://github.com/1996Shubh/Chatapp_project,commitId=${GIT_COMMIT}
              '''
             }
         }
@@ -22,12 +24,11 @@ pipeline {
         }
         
     }
-}
     post { 
         always { 
             echo 'Stage is success'
         }
     }
-
-}    
     
+    
+}
