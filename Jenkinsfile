@@ -1,33 +1,41 @@
 pipeline {
     agent any
-      options {
-            buildDiscarder(logRotator(numToKeepStr: '7'))
-              
-   stages {    
-     stage('Deploy') { 
-           steps {
-             sh ''' #! /bin/bash 
-             
-             aws deploy create-deployment --application-name ChatApplication --deployment-group-name ChatApplication-dg --deployment-config-name CodeDeployDefault.AllAtOnce --github-location repository=https://github.com/NikhilDusane222/ChatApplicationProject1.git,commitId=${GIT_COMMIT}
-             '''
-            }
-        }
-        
-     stage('status'){
-            steps {
-            sh ''' #! /bin/bash
-            echo Deployment started
-            '''
-            }  
-        }
-        
-    }
-}
-    post { 
-        always { 
-            echo 'Stage is success'
-        }
-    }
-
-}    
     
+     stages {
+         stage('Sonarqube') {
+           environment {
+                scannerHome = tool 'SonarScanner'
+                }
+         steps {
+            withSonarQubeEnv('sonarqube') {
+                sh "${scannerHome}/bin/sonar-scanner"
+            }
+            timeout(time: 5, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+            }
+          }
+         }
+ 
+         stage('Deploy') { 
+               steps {
+                 sh ''' #! /bin/bash 
+                 aws deploy create-deployment --application-name TFChatApp --deployment-group-name TFCodeDeployGroup --deployment-config-name CodeDeployDefault.AllAtOnce --github-location repository=NikhilDusane222/ChatApplicationProject1,commitId=${GIT_COMMIT}
+                 '''
+                }
+            }
+
+         stage('status'){
+                steps {
+                sh ''' #! /bin/bash
+                echo Deployment started
+                '''
+                }  
+            }
+
+        }
+        post { 
+            always { 
+                echo 'Stage is success'
+            }
+        }    
+    }

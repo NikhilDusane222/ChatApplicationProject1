@@ -1,3 +1,3 @@
 #!/bin/bash
 cd /
-rm -rf /ChatApplicationProject1/
+sudo rm -rf /ChatApplicationProject1/
