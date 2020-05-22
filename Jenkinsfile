@@ -1,5 +1,12 @@
 pipeline {
     agent any
+    stage ('Build') {
+        	sh "echo 'shell scripts to build project...'"
+               }
+         
+         stage ('Tests') {
+        	sh "echo 'shell scripts to Testing..'"
+               }
     
      stages {
          stage('Sonarqube') {
@@ -15,13 +22,7 @@ pipeline {
             }
           }
          }
-         stage ('Build') {
-        	sh "echo 'shell scripts to build project...'"
-               }
          
-         stage ('Tests') {
-        	sh "echo 'shell scripts to Testing..'"
-               }
          
          stage('Deploy') { 
                steps {
