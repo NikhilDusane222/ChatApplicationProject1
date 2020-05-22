@@ -15,18 +15,8 @@ pipeline {
             }
           }
          }
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') { 
+ 
+         stage('Deploy') { 
                steps {
                  sh ''' #! /bin/bash 
                  aws deploy create-deployment --application-name TFChatApp --deployment-group-name TFCodeDeployGroup --deployment-config-name CodeDeployDefault.AllAtOnce --github-location repository=NikhilDusane222/ChatApplicationProject1,commitId=${GIT_COMMIT}
@@ -49,4 +39,3 @@ pipeline {
             }
         }    
     }
-}
